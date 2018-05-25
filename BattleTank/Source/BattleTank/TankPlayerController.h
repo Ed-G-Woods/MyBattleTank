@@ -29,4 +29,11 @@ public:
 
 	bool GetSightRayHitLocation(FVector& OUT_HL) const;
 
+	//
+
+	UPROPERTY(EditAnywhere)
+	float crosshairLocationX = 0.5;
+
+	UPROPERTY(EditAnywhere)
+	float crosshairLocationY = 0.3333;
 };

@@ -29,7 +29,7 @@ void ATankPlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	
+	AimTowardsCrosshair();
 	
 
 }
@@ -42,7 +42,7 @@ void ATankPlayerController::AimTowardsCrosshair()
 	FVector HitLocation;
 	if (GetSightRayHitLocation(HitLocation))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s"), *(HitLocation.ToString()));
+		//UE_LOG(LogTemp, Warning, TEXT("%s"), *(HitLocation.ToString()));
 	}
 
 
@@ -51,5 +51,11 @@ void ATankPlayerController::AimTowardsCrosshair()
 bool ATankPlayerController::GetSightRayHitLocation(FVector& OUT_HL) const
 {
 	OUT_HL = FVector(0, 0, 0);
+
+	int32 ViewportSizeX, ViewportSizeY;
+	GetViewportSize(ViewportSizeX, ViewportSizeY);
+	FVector2D CrosshairScreenLocation = FVector2D(ViewportSizeX * crosshairLocationX, ViewportSizeY * crosshairLocationY);
+	UE_LOG(LogTemp, Warning, TEXT("%s"), *(CrosshairScreenLocation.ToString()));
+
 	return false;
 }
