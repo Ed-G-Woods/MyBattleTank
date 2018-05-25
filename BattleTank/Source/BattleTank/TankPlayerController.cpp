@@ -30,5 +30,26 @@ void ATankPlayerController::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	
-	UE_LOG(LogTemp, Warning, TEXT("%s"), *(FString::SanitizeFloat(DeltaTime)));
+	
+
+}
+
+
+////
+
+void ATankPlayerController::AimTowardsCrosshair()
+{
+	FVector HitLocation;
+	if (GetSightRayHitLocation(HitLocation))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s"), *(HitLocation.ToString()));
+	}
+
+
+}
+
+bool ATankPlayerController::GetSightRayHitLocation(FVector& OUT_HL) const
+{
+	OUT_HL = FVector(0, 0, 0);
+	return false;
 }
