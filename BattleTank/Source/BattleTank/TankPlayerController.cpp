@@ -52,10 +52,19 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OUT_HL) const
 {
 	OUT_HL = FVector(0, 0, 0);
 
+	///Find CrosshairScreenLocation
 	int32 ViewportSizeX, ViewportSizeY;
 	GetViewportSize(ViewportSizeX, ViewportSizeY);
-	FVector2D CrosshairScreenLocation = FVector2D(ViewportSizeX * crosshairLocationX, ViewportSizeY * crosshairLocationY);
-	UE_LOG(LogTemp, Warning, TEXT("%s"), *(CrosshairScreenLocation.ToString()));
+// 	FVector2D CrosshairScreenLocation = FVector2D(ViewportSizeX * crosshairLocationX, ViewportSizeY * crosshairLocationY);
+// 	UE_LOG(LogTemp, Warning, TEXT("%s"), *(CrosshairScreenLocation.ToString()));
+
+	///DeprojectScreenPositionToWorld
+	FVector DeprojectWorldLocation, DeprojectWorldDirection;
+	DeprojectScreenPositionToWorld(ViewportSizeX * crosshairLocationX, ViewportSizeY * crosshairLocationY, DeprojectWorldLocation, DeprojectWorldDirection);
+	UE_LOG(LogTemp, Warning, TEXT("%s , %s"), *(DeprojectWorldLocation.ToString()), *(DeprojectWorldDirection.ToString()));
+
+
+
 
 	return false;
 }
