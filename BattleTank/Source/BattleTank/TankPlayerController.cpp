@@ -42,7 +42,7 @@ void ATankPlayerController::AimTowardsCrosshair()
 	FVector HitLocation;
 	if (GetSightRayHitLocation(HitLocation))
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("%s"), *(HitLocation.ToString()));
+		GetControlledTank()->AimAt(HitLocation);
 	}
 
 
@@ -55,19 +55,15 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OUT_HL)
 	///Find CrosshairScreenLocation
 	int32 ViewportSizeX, ViewportSizeY;
 	GetViewportSize(ViewportSizeX, ViewportSizeY);
-// 	FVector2D CrosshairScreenLocation = FVector2D(ViewportSizeX * crosshairLocationX, ViewportSizeY * crosshairLocationY);
-// 	UE_LOG(LogTemp, Warning, TEXT("%s"), *(CrosshairScreenLocation.ToString()));
 
 	///DeprojectScreenPositionToWorld
 
 	FVector DeprojectWorldDirection;
-	FHitResult TankAimResult;
 
 	if (DeprojectScreenPositionToWorld(ViewportSizeX * crosshairLocationX, ViewportSizeY * crosshairLocationY, AimStartLocation, DeprojectWorldDirection))
 	{
 	
 		AimEndLocation = AimStartLocation + (DeprojectWorldDirection * 1000000);
-
 
 		if (GetWorld()->LineTraceSingleByChannel(
 			TankAimResult,
@@ -75,11 +71,10 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OUT_HL)
 			AimEndLocation,
 			ECC_Visibility
 			
-
-			)	)
+			)	
+			)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("%s"), *(TankAimResult.Location.ToString()));
-		
+			OUT_HL = TankAimResult.Location;
 		}
 		else
 		{
@@ -87,10 +82,7 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OUT_HL)
 		}
 	}
 
-	//UE_LOG(LogTemp, Warning, TEXT("%s , %s"), *(DeprojectWorldLocation.ToString()), *(DeprojectWorldDirection.ToString()));
 
 
-
-
-	return false;
+	return TankAimResult.IsValidBlockingHit();
 }

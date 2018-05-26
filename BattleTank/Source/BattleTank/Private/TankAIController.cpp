@@ -19,23 +19,28 @@ void ATankAIController::BeginPlay()
 	Super::BeginPlay();
 
 
-	ATank* aiTank =  GetAIControllTank();
+	aiTank =  GetAIControllTank();
+	playerTank = GetPlayerTank();
 
-	if (aiTank)
+
+
+}
+
+void ATankAIController::Tick(float Deltatime)
+{
+	Super::Tick(Deltatime);
+
+	if (playerTank)
 	{
+		//move towards player
 
-		UE_LOG(LogTemp, Warning, TEXT("%s 's AIController Begin Play"), *(aiTank->GetName()));
-	}
+		//Aim at player
 
-	ATank* playerTank = GetPlayerTank();
+		aiTank->AimAt(playerTank->GetTargetLocation());
 
-	if (!playerTank)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("playertank Can't find"));
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("find playertank -- %s"),*(playerTank->GetName()));
+		//fire
+
+
 	}
 
 }

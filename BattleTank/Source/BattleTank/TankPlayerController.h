@@ -43,4 +43,6 @@ public:
 
 	UPROPERTY(BlueprintReadOnly)
 	FVector AimEndLocation;
+
+	FHitResult TankAimResult;
 };

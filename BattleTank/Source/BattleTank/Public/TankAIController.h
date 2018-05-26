@@ -22,6 +22,10 @@ public:
 
 
 	virtual void BeginPlay() override;
-	
+	virtual void Tick(float Deltatime) override;
+
+
+	ATank* aiTank ;
+	ATank* playerTank ;
 	
 };
