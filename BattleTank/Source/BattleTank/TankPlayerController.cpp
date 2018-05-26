@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankPlayerController.h"
-
+#include "Engine/World.h"
 
 
 
@@ -48,7 +48,7 @@ void ATankPlayerController::AimTowardsCrosshair()
 
 }
 
-bool ATankPlayerController::GetSightRayHitLocation(FVector& OUT_HL) const
+bool ATankPlayerController::GetSightRayHitLocation(FVector& OUT_HL)
 {
 	OUT_HL = FVector(0, 0, 0);
 
@@ -59,9 +59,35 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OUT_HL) const
 // 	UE_LOG(LogTemp, Warning, TEXT("%s"), *(CrosshairScreenLocation.ToString()));
 
 	///DeprojectScreenPositionToWorld
-	FVector DeprojectWorldLocation, DeprojectWorldDirection;
-	DeprojectScreenPositionToWorld(ViewportSizeX * crosshairLocationX, ViewportSizeY * crosshairLocationY, DeprojectWorldLocation, DeprojectWorldDirection);
-	UE_LOG(LogTemp, Warning, TEXT("%s , %s"), *(DeprojectWorldLocation.ToString()), *(DeprojectWorldDirection.ToString()));
+
+	FVector DeprojectWorldDirection;
+	FHitResult TankAimResult;
+
+	if (DeprojectScreenPositionToWorld(ViewportSizeX * crosshairLocationX, ViewportSizeY * crosshairLocationY, AimStartLocation, DeprojectWorldDirection))
+	{
+	
+		AimEndLocation = AimStartLocation + (DeprojectWorldDirection * 1000000);
+
+
+		if (GetWorld()->LineTraceSingleByChannel(
+			TankAimResult,
+			AimStartLocation,
+			AimEndLocation,
+			ECC_Visibility
+			
+
+			)	)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%s"), *(TankAimResult.Location.ToString()));
+		
+		}
+		else
+		{
+
+		}
+	}
+
+	//UE_LOG(LogTemp, Warning, TEXT("%s , %s"), *(DeprojectWorldLocation.ToString()), *(DeprojectWorldDirection.ToString()));
 
 
 
