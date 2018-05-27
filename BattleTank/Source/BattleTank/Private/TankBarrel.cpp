@@ -5,7 +5,7 @@
 
 
 
-void UTankBarrel::Elevate(float DegreesPerSecond)
+void UTankBarrel::Elevate(float Speed)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Barrel Compoent Set"));
 }

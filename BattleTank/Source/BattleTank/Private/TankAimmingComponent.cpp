@@ -4,13 +4,14 @@
 #include "TankAimmingComponent.h"
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 #include "TankBarrel.h"
+#include "Engine/World.h"
 
 // Sets default values for this component's properties
 UTankAimmingComponent::UTankAimmingComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = false;
 
 	// ...
 }
@@ -26,13 +27,13 @@ void UTankAimmingComponent::BeginPlay()
 }
 
 
-// Called every frame
-void UTankAimmingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
-}
+// // Called every frame
+// void UTankAimmingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+// {
+// 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+// 
+// 	// ...
+// }
 
 void UTankAimmingComponent::AimAt(FVector a,float LaunchSpeed)
 {
@@ -42,7 +43,8 @@ void UTankAimmingComponent::AimAt(FVector a,float LaunchSpeed)
 
 	TArray<AActor*> actortoignore;
 
-	UGameplayStatics::SuggestProjectileVelocity(
+
+	bool AimRusult = UGameplayStatics::SuggestProjectileVelocity(
 		this,
 		OutLaunchVelocity,
 		StarLocation,
@@ -51,6 +53,16 @@ void UTankAimmingComponent::AimAt(FVector a,float LaunchSpeed)
 		ESuggestProjVelocityTraceOption::DoNotTrace
 	);
 
+	if (AimRusult)
+	{
+		float time = GetWorld()->GetTimeSeconds();
+		UE_LOG(LogTemp, Warning, TEXT("%f : Yes "), time);
+	}
+	else
+	{
+		float time = GetWorld()->GetTimeSeconds();
+		UE_LOG(LogTemp, Warning, TEXT("%f : No "), time);
+	}
 
 	/*UE_LOG(LogTemp, Warning, TEXT("%s Aiming  %s"),*(GetOwner()->GetName()),*(OutLaunchVelocity.ToString()));*/
 
