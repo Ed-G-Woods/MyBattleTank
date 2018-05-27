@@ -1,7 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+
 #include "TankAimmingComponent.h"
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
+#include "TankBarrel.h"
 
 // Sets default values for this component's properties
 UTankAimmingComponent::UTankAimmingComponent()
@@ -46,22 +48,24 @@ void UTankAimmingComponent::AimAt(FVector a,float LaunchSpeed)
 		StarLocation,
 		a,
 		LaunchSpeed,
-		false,
-		0.0,
-		0.0,
-		ESuggestProjVelocityTraceOption::DoNotTrace,
-		FCollisionResponseParams::DefaultResponseParam,
-		actortoignore,
-		true
+		ESuggestProjVelocityTraceOption::DoNotTrace
 	);
 
 
-	UE_LOG(LogTemp, Warning, TEXT("%s Aiming  %s"),*(GetOwner()->GetName()),*(OutLaunchVelocity.ToString()));
+	/*UE_LOG(LogTemp, Warning, TEXT("%s Aiming  %s"),*(GetOwner()->GetName()),*(OutLaunchVelocity.ToString()));*/
 
 }
 
-void UTankAimmingComponent::SetBarrelReference(UStaticMeshComponent* BarrelToSet)
+void UTankAimmingComponent::SetBarrelReference(UTankBarrel* BarrelToSet)
 {
 	Barrel = BarrelToSet;
+}
+
+void UTankAimmingComponent::MoveBarrel(FVector AimDirection)
+{
+	FRotator BarrelRotatorNow = Barrel->GetForwardVector().Rotation();
+	FRotator BarrelRotatorDesire = AimDirection.Rotation();
+
+	Barrel->Elevate(5);
 }
 
