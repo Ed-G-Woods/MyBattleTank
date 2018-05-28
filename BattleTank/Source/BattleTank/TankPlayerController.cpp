@@ -34,6 +34,11 @@ void ATankPlayerController::Tick(float DeltaTime)
 	AimTowardsCrosshair();
 	
 
+	UE_LOG(LogTemp, Warning, TEXT("%f :s "),GetWorld()->DeltaTimeSeconds);
+	
+
+	UE_LOG(LogTemp, Warning, TEXT("%f :s "),GetWorld()->GetDeltaSeconds());
+
 }
 
 

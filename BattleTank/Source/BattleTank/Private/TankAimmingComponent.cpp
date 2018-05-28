@@ -4,6 +4,7 @@
 #include "TankAimmingComponent.h"
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 #include "TankBarrel.h"
+#include "TankTurret.h"
 #include "Engine/World.h"
 
 // Sets default values for this component's properties
@@ -50,34 +51,41 @@ void UTankAimmingComponent::AimAt(FVector a,float LaunchSpeed)
 		StarLocation,
 		a,
 		LaunchSpeed,
+		false,
+		0,
+		0,
 		ESuggestProjVelocityTraceOption::DoNotTrace
 	);
 
 	if (AimRusult)
 	{
-		float time = GetWorld()->GetTimeSeconds();
-		UE_LOG(LogTemp, Warning, TEXT("%f : Yes "), time);
+// 		float time = GetWorld()->GetTimeSeconds();
+// 		UE_LOG(LogTemp, Warning, TEXT("%f : Yes "), time);
+
+		MoveBarrelAndTurret(OutLaunchVelocity);
 	}
 	else
 	{
 		float time = GetWorld()->GetTimeSeconds();
 		UE_LOG(LogTemp, Warning, TEXT("%f : No "), time);
+
+
 	}
 
 	/*UE_LOG(LogTemp, Warning, TEXT("%s Aiming  %s"),*(GetOwner()->GetName()),*(OutLaunchVelocity.ToString()));*/
 
-}
 
-void UTankAimmingComponent::SetBarrelReference(UTankBarrel* BarrelToSet)
-{
-	Barrel = BarrelToSet;
-}
 
-void UTankAimmingComponent::MoveBarrel(FVector AimDirection)
+
+
+}
+void UTankAimmingComponent::MoveBarrelAndTurret(FVector AimDirection)
 {
 	FRotator BarrelRotatorNow = Barrel->GetForwardVector().Rotation();
 	FRotator BarrelRotatorDesire = AimDirection.Rotation();
 
-	Barrel->Elevate(5);
+	
+	Barrel->Elevate(BarrelRotatorDesire.Pitch - BarrelRotatorNow.Pitch);
+	Turret->AddYawRotation(BarrelRotatorDesire.Yaw - BarrelRotatorNow.Yaw);
 }
 

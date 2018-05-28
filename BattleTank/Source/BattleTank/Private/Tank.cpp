@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Tank.h"
-
+#include "TankAimmingComponent.h"
 
 // Sets default values
 ATank::ATank()
@@ -23,6 +23,8 @@ void ATank::AimAt(FVector HitLocation)
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
+
+
 	
 }
 
@@ -35,8 +37,9 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
-void ATank::SetBarrelReference(UTankBarrel* BarrelToSet)
+void ATank::TankAimmingComponentSetup(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet)
 {
-	TankAimmingComponent->SetBarrelReference(BarrelToSet);
+	TankAimmingComponent->Barrel = BarrelToSet;
+	TankAimmingComponent->Turret = TurretToSet;
 }
 
