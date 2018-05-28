@@ -87,5 +87,8 @@ void UTankAimmingComponent::MoveBarrelAndTurret(FVector AimDirection)
 	
 	Barrel->Elevate(BarrelRotatorDesire.Pitch - BarrelRotatorNow.Pitch);
 	Turret->AddYawRotation(BarrelRotatorDesire.Yaw - BarrelRotatorNow.Yaw);
+
+	UE_LOG(LogTemp, Warning, TEXT("%s   :N:D:   %s"), *(FString::SanitizeFloat(BarrelRotatorNow.Yaw)), *(FString::SanitizeFloat(BarrelRotatorDesire.Yaw)));
+
 }
 
