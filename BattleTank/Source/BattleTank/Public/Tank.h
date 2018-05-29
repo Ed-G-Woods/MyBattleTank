@@ -39,9 +39,9 @@ public:
 		void Fire();
 
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 		float LaunchSpeed = 10000.0;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 		TSubclassOf<AProjectile> projectile;
 
 	float ReloadTime = 3;
