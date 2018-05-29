@@ -35,7 +35,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = Setup)
 		void TankAimmingComponentSetup(UTankBarrel* BarrelToSet , UTankTurret* TurretToSet);
-
+	UFUNCTION(BlueprintCallable)
+		void Fire();
 
 
 	UPROPERTY(EditAnywhere)
