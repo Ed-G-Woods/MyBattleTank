@@ -52,6 +52,12 @@ void ATank::Fire()
 {
 	UE_LOG(LogTemp, Warning, TEXT("-----!FIRE!------"))
 
-	GetWorld()->SpawnActor<AProjectile>(projectile, TankAimmingComponent->Barrel->GetSocketLocation(FName("FireLocation")), TankAimmingComponent->OutLaunchVelocity.Rotation());
+
+	auto P = GetWorld()->SpawnActor<AProjectile>(projectile, 
+												TankAimmingComponent->Barrel->GetSocketLocation(FName("FireLocation")), 
+												TankAimmingComponent->Barrel->GetSocketRotation(FName("FireLocation")));
+	
+	P->LaunchProjectile(LaunchSpeed);
+
 }
 
