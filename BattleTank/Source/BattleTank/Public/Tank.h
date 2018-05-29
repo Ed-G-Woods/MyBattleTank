@@ -40,10 +40,10 @@ public:
 
 
 	UPROPERTY(EditAnywhere)
-		float LaunchSpeed = 100000.0;
+		float LaunchSpeed = 10000.0;
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<AProjectile> projectile;
 
-
-	
+	float ReloadTime = 3;
+	float LastFireTime = 0;
 };

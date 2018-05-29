@@ -50,14 +50,25 @@ void ATank::TankAimmingComponentSetup(UTankBarrel* BarrelToSet, UTankTurret* Tur
 
 void ATank::Fire()
 {
+
+
 	UE_LOG(LogTemp, Warning, TEXT("-----!FIRE!------"))
-
-
-	auto P = GetWorld()->SpawnActor<AProjectile>(projectile, 
-												TankAimmingComponent->Barrel->GetSocketLocation(FName("FireLocation")), 
-												TankAimmingComponent->Barrel->GetSocketRotation(FName("FireLocation")));
 	
-	P->LaunchProjectile(LaunchSpeed);
+	
+	bool isReloaded= FPlatformTime::Seconds()-LastFireTime > ReloadTime;
+
+	if (isReloaded)
+	{
+		auto P = GetWorld()->SpawnActor<AProjectile>(projectile,
+			TankAimmingComponent->Barrel->GetSocketLocation(FName("FireLocation")),
+			TankAimmingComponent->Barrel->GetSocketRotation(FName("FireLocation"))
+			);
+
+		P->LaunchProjectile(LaunchSpeed);
+
+		LastFireTime = FPlatformTime::Seconds();
+	}
+
 
 }
 
