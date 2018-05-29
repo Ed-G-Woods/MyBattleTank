@@ -39,7 +39,7 @@ void UTankAimmingComponent::BeginPlay()
 void UTankAimmingComponent::AimAt(FVector a,float LaunchSpeed)
 {
 	
-	FVector OutLaunchVelocity;
+	//FVector OutLaunchVelocity;
 	FVector StarLocation = Barrel->GetSocketLocation(FName("FireLocation"));
 
 	TArray<AActor*> actortoignore;

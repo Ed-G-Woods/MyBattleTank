@@ -37,6 +37,8 @@ public:
 
 	UTankTurret* Turret = nullptr;
 
+	FVector OutLaunchVelocity;
+
 
 
 private:

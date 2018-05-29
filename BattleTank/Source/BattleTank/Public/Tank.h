@@ -2,12 +2,12 @@
 
 #pragma once
 
-
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
 
 class UTankAimmingComponent;
+class AProjectile;
 
 
 UCLASS()
@@ -41,5 +41,9 @@ public:
 
 	UPROPERTY(EditAnywhere)
 		float LaunchSpeed = 100000.0;
+	UPROPERTY(EditAnywhere)
+		TSubclassOf<AProjectile> projectile;
+
+
 	
 };
