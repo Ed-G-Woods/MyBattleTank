@@ -92,3 +92,8 @@ void UTankAimmingComponent::MoveBarrelAndTurret(FVector AimDirection)
 
 }
 
+void UTankAimmingComponent::TankAimmingComponentSetup(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet)
+{
+	Barrel = BarrelToSet;
+	Turret = TurretToSet;
+}

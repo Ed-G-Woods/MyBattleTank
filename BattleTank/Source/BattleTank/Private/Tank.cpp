@@ -2,6 +2,7 @@
 
 #include "Tank.h"
 #include "TankAimmingComponent.h"
+#include "TankMovementComponent.h"
 #include "Projectile.h"
 #include "Engine/World.h"
 #include "TankBarrel.h"
@@ -13,6 +14,7 @@ ATank::ATank()
 	PrimaryActorTick.bCanEverTick = false;
 
 	TankAimmingComponent = CreateDefaultSubobject<UTankAimmingComponent>(FName("Aimming Component"));
+	TankMovement = CreateDefaultSubobject<UTankMovementComponent>(FName("Tank Movement"));
 
 }
 
@@ -40,22 +42,15 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
-void ATank::TankAimmingComponentSetup(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet)
-{
-	TankAimmingComponent->Barrel = BarrelToSet;
-	TankAimmingComponent->Turret = TurretToSet;
-
-
-}
 
 void ATank::Fire()
 {
 
 
-	UE_LOG(LogTemp, Warning, TEXT("-----!FIRE!------"))
+	//UE_LOG(LogTemp, Warning, TEXT("-----!FIRE!------"))
 	
 	
-	bool isReloaded= FPlatformTime::Seconds()-LastFireTime > ReloadTime;
+	bool isReloaded= GetWorld()->GetTimeSeconds()-LastFireTime > ReloadTime;
 
 	if (isReloaded)
 	{
@@ -66,7 +61,7 @@ void ATank::Fire()
 
 		P->LaunchProjectile(LaunchSpeed);
 
-		LastFireTime = FPlatformTime::Seconds();
+		LastFireTime = GetWorld()->GetTimeSeconds();
 	}
 
 

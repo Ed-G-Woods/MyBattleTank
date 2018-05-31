@@ -5,3 +5,7 @@
 
 
 
+void UTankMovementComponent::IntendMoveForward(float s)
+{
+	UE_LOG(LogTemp, Warning, TEXT("IntendMoveForward : %f"),s)
+}

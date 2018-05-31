@@ -40,6 +40,8 @@ public:
 	FVector OutLaunchVelocity;
 
 
+	UFUNCTION(BlueprintCallable, Category = Setup)
+		void TankAimmingComponentSetup(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet);
 
 private:
 
