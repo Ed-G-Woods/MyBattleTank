@@ -28,8 +28,8 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly)
 	UTankAimmingComponent* TankAimmingComponent = nullptr;
-	UPROPERTY(BlueprintReadOnly)
-	UTankMovementComponent* TankMovement = nullptr;
+// 	UPROPERTY(BlueprintReadOnly)
+// 	UTankMovementComponent* TankMovement = nullptr;
 
 public:	
 	// Called every frame
@@ -43,7 +43,7 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 		float LaunchSpeed = 10000.0;
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite)
 		TSubclassOf<AProjectile> projectile;
 	UPROPERTY(EditDefaultsOnly)
 	float ReloadTime = 3;
