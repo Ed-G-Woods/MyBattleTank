@@ -19,11 +19,18 @@ void ATankPlayerController::BeginPlay()
 
 	PlayerTank = GetControlledTank();
 
-	if (PlayerTank)
-	{
 
-		UE_LOG(LogTemp, Warning, TEXT("%s 's PlayerController Begin Play"), *(PlayerTank->GetName()));
+
+	if (PlayerTank->TankAimmingComponent)
+	{
+		FoundUIAimingComponent(PlayerTank->TankAimmingComponent);
 	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Tank Aimming Component unfound"))
+	}
+	
+
 	
 }
 

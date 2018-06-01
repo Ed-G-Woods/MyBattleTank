@@ -12,15 +12,18 @@ ATank::ATank()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
+	TankAimmingComponent = FindComponentByClass<UTankAimmingComponent>();
+	
 
-	TankAimmingComponent = CreateDefaultSubobject<UTankAimmingComponent>(FName("Aimming Component"));
+	//TankAimmingComponent = CreateDefaultSubobject<UTankAimmingComponent>(FName("Aimming Component"));
 	/*TankMovement = CreateDefaultSubobject<UTankMovementComponent>(FName("Tank Movement"));*/
 
 }
 
 void ATank::AimAt(FVector HitLocation)
 {
-	
+	if (!TankAimmingComponent) { return; }
+
 	TankAimmingComponent->AimAt(HitLocation, LaunchSpeed);
 }
 
@@ -28,8 +31,7 @@ void ATank::AimAt(FVector HitLocation)
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
-
-
+	
 	
 }
 
@@ -45,7 +47,7 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void ATank::Fire()
 {
-
+	if (!TankAimmingComponent) { return ; }
 
 	//UE_LOG(LogTemp, Warning, TEXT("-----!FIRE!------"))
 	
@@ -75,6 +77,8 @@ void ATank::Fire()
 
 void ATank::FiringStateCheck()
 {
+	if (!TankAimmingComponent) { return; }
+
 	if (GetWorld()->GetTimeSeconds() - LastFireTime > ReloadTime)
 	{
 		if (TankAimmingComponent->islocked)

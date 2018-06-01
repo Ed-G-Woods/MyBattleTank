@@ -24,6 +24,8 @@ void UTankAimmingComponent::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
+
+
 	
 }
 

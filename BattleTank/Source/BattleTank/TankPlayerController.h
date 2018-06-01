@@ -9,7 +9,7 @@
 
 
 class ATank;
-
+class UTankAimmingComponent;
 
 /**
  * 
@@ -23,6 +23,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	ATank * GetControlledTank() const;
+
+
 
 	ATank* PlayerTank ;
 	
@@ -53,4 +55,9 @@ public:
 	FVector AimEndLocation;
 
 	FHitResult TankAimResult;
+
+	UFUNCTION(BlueprintImplementableEvent,category = "Setup")
+	void FoundUIAimingComponent(UTankAimmingComponent* AimComRef);
+
+	
 };
