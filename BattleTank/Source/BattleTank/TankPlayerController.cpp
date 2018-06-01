@@ -17,7 +17,7 @@ void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	ATank* PlayerTank = GetControlledTank();
+	PlayerTank = GetControlledTank();
 
 	if (PlayerTank)
 	{
@@ -32,12 +32,9 @@ void ATankPlayerController::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	AimTowardsCrosshair();
+
+	PlayerTank->FiringStateCheck();
 	
-// 
-// 	UE_LOG(LogTemp, Warning, TEXT("%f :s "),GetWorld()->DeltaTimeSeconds);
-// 	
-// 
-// 	UE_LOG(LogTemp, Warning, TEXT("%f :s "),GetWorld()->GetDeltaSeconds());
 
 }
 
@@ -93,3 +90,5 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OUT_HL)
 
 	return TankAimResult.IsValidBlockingHit();
 }
+
+

@@ -50,10 +50,11 @@ void ATank::Fire()
 	//UE_LOG(LogTemp, Warning, TEXT("-----!FIRE!------"))
 	
 	
-	bool isReloaded= GetWorld()->GetTimeSeconds()-LastFireTime > ReloadTime;
+	 bool isReloaded= GetWorld()->GetTimeSeconds()-LastFireTime > ReloadTime;
 
 	if (isReloaded)
 	{
+
 		auto P = GetWorld()->SpawnActor<AProjectile>(projectile,
 			TankAimmingComponent->Barrel->GetSocketLocation(FName("FireLocation")),
 			TankAimmingComponent->Barrel->GetSocketRotation(FName("FireLocation"))
@@ -62,8 +63,36 @@ void ATank::Fire()
 		P->LaunchProjectile(LaunchSpeed);
 
 		LastFireTime = GetWorld()->GetTimeSeconds();
+
+		
+	}
+	else
+	{
 	}
 
+
+}
+
+void ATank::FiringStateCheck()
+{
+	if (GetWorld()->GetTimeSeconds() - LastFireTime > ReloadTime)
+	{
+		if (TankAimmingComponent->islocked)
+		{
+			TankAimmingComponent->firingstatus = EFiringStatus::Locked;
+			UE_LOG(LogTemp, Warning, TEXT("Locked"))
+		}
+		else
+		{
+			TankAimmingComponent->firingstatus = EFiringStatus::Aiming;
+			UE_LOG(LogTemp, Warning, TEXT("Aiming"))
+		}
+	}
+	else
+	{
+		TankAimmingComponent->firingstatus = EFiringStatus::Reloading;
+		UE_LOG(LogTemp, Warning, TEXT("Reloading"))
+	}
 
 }
 

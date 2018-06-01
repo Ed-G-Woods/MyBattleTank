@@ -22,12 +22,15 @@ public:
 
 	void AimAt(FVector HitLocation);
 
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+
 	UPROPERTY(BlueprintReadOnly)
-	UTankAimmingComponent* TankAimmingComponent = nullptr;
+		UTankAimmingComponent* TankAimmingComponent = nullptr;
+
 // 	UPROPERTY(BlueprintReadOnly)
 // 	UTankMovementComponent* TankMovement = nullptr;
 
@@ -39,6 +42,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		void Fire();
+
+	void FiringStateCheck();
 
 
 	UPROPERTY(EditDefaultsOnly)

@@ -84,6 +84,8 @@ void UTankAimmingComponent::MoveBarrelAndTurret(FVector AimDirection)
 	FRotator BarrelRotatorNow = Barrel->GetForwardVector().Rotation();
 	FRotator BarrelRotatorDesire = AimDirection.Rotation();
 
+	if (BarrelRotatorNow == BarrelRotatorDesire) { islocked = true; }else { islocked = false; }
+	
 	
 	Barrel->Elevate(BarrelRotatorDesire.Pitch - BarrelRotatorNow.Pitch);
 	Turret->AddYawRotation(BarrelRotatorDesire.Yaw - BarrelRotatorNow.Yaw);
@@ -97,3 +99,5 @@ void UTankAimmingComponent::TankAimmingComponentSetup(UTankBarrel* BarrelToSet, 
 	Barrel = BarrelToSet;
 	Turret = TurretToSet;
 }
+
+
