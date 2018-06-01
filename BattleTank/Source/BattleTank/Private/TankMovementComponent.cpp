@@ -16,10 +16,19 @@ void UTankMovementComponent::IntendMoveForward(float s)
 
 void UTankMovementComponent::IntendToTurn(float s)
 {
-
-
-	L_Track->SetThrottle(-s);
-	R_Track->SetThrottle(s);
+// 
+// 	if (s>0)
+// 	{
+// 		L_Track->SetThrottle(-s*2);
+// 		R_Track->SetThrottle(s*2);
+// 	}
+// 	else if(s<0)
+// 	{
+// 		L_Track->SetThrottle(-s * 2);
+// 		R_Track->SetThrottle(s * 2);
+// 	}
+	L_Track->SetThrottle(-s*2);
+	R_Track->SetThrottle(s*2);
 }
 
 void UTankMovementComponent::Initialise(UTankTrack* L_Track, UTankTrack* R_Track)
@@ -32,6 +41,13 @@ void UTankMovementComponent::Initialise(UTankTrack* L_Track, UTankTrack* R_Track
 
 void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed)
 {
-	UE_LOG(LogTemp, Warning, TEXT("%s  ----- %s"),* GetOwner()->GetName(),* MoveVelocity.ToString())
+	FVector TankForward = GetOwner()->GetActorForwardVector().GetSafeNormal();
+	FVector AIForwardIntention = MoveVelocity.GetSafeNormal();
+
+	float dot = FVector::DotProduct(TankForward, AIForwardIntention);
+	IntendMoveForward(dot);
+
+	FVector cross= FVector::CrossProduct( AIForwardIntention, TankForward);
+	IntendToTurn(cross.Z);
 }
 
