@@ -2,6 +2,7 @@
 
 #include "TankAIController.h"
 #include "Engine/World.h"
+#include "Tank.h"
 
 
 
@@ -9,12 +10,8 @@ void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
 
-
 	aiTank = Cast<ATank>(GetPawn());
 	playerTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
-
-
-
 }
 
 void ATankAIController::Tick(float Deltatime)
@@ -23,20 +20,14 @@ void ATankAIController::Tick(float Deltatime)
 
 	if (playerTank)
 	{
-		//move towards player
-		MoveToActor(playerTank, 300);
+		MoveToActor(playerTank, 600);
 
-
-		//Aim at player
 
 		aiTank->AimAt(playerTank->GetTargetLocation());
 
-		//fire
 
 		aiTank->Fire();
 	}
-
-
 
 }
 

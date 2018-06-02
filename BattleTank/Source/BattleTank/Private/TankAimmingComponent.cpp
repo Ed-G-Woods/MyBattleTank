@@ -5,6 +5,7 @@
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 #include "TankBarrel.h"
 #include "TankTurret.h"
+#include "Projectile.h"
 #include "Engine/World.h"
 
 // Sets default values for this component's properties
@@ -38,8 +39,10 @@ void UTankAimmingComponent::BeginPlay()
 // 	// ...
 // }
 
-void UTankAimmingComponent::AimAt(FVector a,float LaunchSpeed)
+void UTankAimmingComponent::AimAt(FVector a)
 {
+	if (!ensure(Barrel && Turret)) { return; }
+
 	
 	//FVector OutLaunchVelocity;
 	FVector StarLocation = Barrel->GetSocketLocation(FName("FireLocation"));
@@ -52,7 +55,7 @@ void UTankAimmingComponent::AimAt(FVector a,float LaunchSpeed)
 		OutLaunchVelocity,
 		StarLocation,
 		a,
-		LaunchSpeed,
+		ProjectileLaunchSpeed,
 		false,
 		0,
 		0,
@@ -61,17 +64,10 @@ void UTankAimmingComponent::AimAt(FVector a,float LaunchSpeed)
 
 	if (AimRusult)
 	{
-// 		float time = GetWorld()->GetTimeSeconds();
-// 		UE_LOG(LogTemp, Warning, TEXT("%f : Yes "), time);
-
 		MoveBarrelAndTurret(OutLaunchVelocity);
 	}
 	else
 	{
-		float time = GetWorld()->GetTimeSeconds();
-		UE_LOG(LogTemp, Warning, TEXT("%f : No "), time);
-
-
 	}
 
 	/*UE_LOG(LogTemp, Warning, TEXT("%s Aiming  %s"),*(GetOwner()->GetName()),*(OutLaunchVelocity.ToString()));*/
@@ -83,6 +79,8 @@ void UTankAimmingComponent::AimAt(FVector a,float LaunchSpeed)
 }
 void UTankAimmingComponent::MoveBarrelAndTurret(FVector AimDirection)
 {
+	if (!ensure(Barrel && Turret)) { return; }
+
 	FRotator BarrelRotatorNow = Barrel->GetForwardVector().Rotation();
 	FRotator BarrelRotatorDesire = AimDirection.Rotation();
 
@@ -96,8 +94,22 @@ void UTankAimmingComponent::MoveBarrelAndTurret(FVector AimDirection)
 
 }
 
+void UTankAimmingComponent::SpawnProjectileAndLaunch()
+{
+
+	auto P = GetWorld()->SpawnActor<AProjectile>(projectile,
+												Barrel->GetSocketLocation(FName("FireLocation")),
+												Barrel->GetSocketRotation(FName("FireLocation"))
+												);
+
+	P->LaunchProjectile(ProjectileLaunchSpeed);
+
+}
+
 void UTankAimmingComponent::TankAimmingComponentSetup(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet)
 {
+
+
 	Barrel = BarrelToSet;
 	Turret = TurretToSet;
 }

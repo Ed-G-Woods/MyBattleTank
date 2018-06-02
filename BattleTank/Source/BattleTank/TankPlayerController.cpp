@@ -6,32 +6,18 @@
 #include "Engine/World.h"
 
 
-
-ATank * ATankPlayerController::GetControlledTank() const
-{
-	return Cast<ATank>(GetPawn());
-	
-}
-
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
 	PlayerTank = GetControlledTank();
 
+}
 
+ATank * ATankPlayerController::GetControlledTank() const
+{
+	return Cast<ATank>(GetPawn());
 
-	if (PlayerTank->TankAimmingComponent)
-	{
-		FoundUIAimingComponent(PlayerTank->TankAimmingComponent);
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Tank Aimming Component unfound"))
-	}
-	
-
-	
 }
 
 void ATankPlayerController::Tick(float DeltaTime)
@@ -45,8 +31,6 @@ void ATankPlayerController::Tick(float DeltaTime)
 
 }
 
-
-////
 
 void ATankPlayerController::AimTowardsCrosshair()
 {

@@ -3,41 +3,25 @@
 #include "Tank.h"
 #include "TankAimmingComponent.h"
 #include "TankMovementComponent.h"
-#include "Projectile.h"
 #include "Engine/World.h"
-#include "TankBarrel.h"
 
 // Sets default values
 ATank::ATank()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
-	TankAimmingComponent = FindComponentByClass<UTankAimmingComponent>();
-	
 
-	//TankAimmingComponent = CreateDefaultSubobject<UTankAimmingComponent>(FName("Aimming Component"));
-	/*TankMovement = CreateDefaultSubobject<UTankMovementComponent>(FName("Tank Movement"));*/
+// Set 	TankAimmingComponent in Blueprint Constructiono
+
 
 }
-
-void ATank::AimAt(FVector HitLocation)
-{
-	if (!TankAimmingComponent) { return; }
-
-	TankAimmingComponent->AimAt(HitLocation, LaunchSpeed);
-}
-
-// Called when the game starts or when spawned
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	
+
+
 }
 
-// Called every frame
-
-// Called to bind functionality to input
 void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
@@ -45,9 +29,18 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 }
 
 
+
+void ATank::AimAt(FVector HitLocation)
+{
+	if (!TankAimmingComponent) { return; }
+
+	TankAimmingComponent->AimAt(HitLocation);
+}
+
+
 void ATank::Fire()
 {
-	if (!TankAimmingComponent) { return ; }
+	if (!ensure(TankAimmingComponent)) { return ; }
 
 	//UE_LOG(LogTemp, Warning, TEXT("-----!FIRE!------"))
 	
@@ -56,20 +49,13 @@ void ATank::Fire()
 
 	if (isReloaded)
 	{
-
-		auto P = GetWorld()->SpawnActor<AProjectile>(projectile,
-			TankAimmingComponent->Barrel->GetSocketLocation(FName("FireLocation")),
-			TankAimmingComponent->Barrel->GetSocketRotation(FName("FireLocation"))
-			);
-
-		P->LaunchProjectile(LaunchSpeed);
+		TankAimmingComponent->SpawnProjectileAndLaunch();
 
 		LastFireTime = GetWorld()->GetTimeSeconds();
-
-		
 	}
 	else
 	{
+
 	}
 
 
@@ -77,7 +63,7 @@ void ATank::Fire()
 
 void ATank::FiringStateCheck()
 {
-	if (!TankAimmingComponent) { return; }
+	if (!ensure(TankAimmingComponent)) { return; }
 
 	if (GetWorld()->GetTimeSeconds() - LastFireTime > ReloadTime)
 	{

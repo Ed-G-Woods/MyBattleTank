@@ -9,7 +9,6 @@
 
 
 class ATank;
-class UTankAimmingComponent;
 
 /**
  * 
@@ -20,27 +19,16 @@ class BATTLETANK_API ATankPlayerController : public APlayerController
 	GENERATED_BODY()
 	
 public:
+	virtual void BeginPlay() override;
+
+	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintCallable)
 	ATank * GetControlledTank() const;
 
-
-
-	ATank* PlayerTank ;
-	
-	virtual void BeginPlay() override;
-
-	virtual void Tick(float DeltaTime) override;
-	
-
-	////
-
 	void AimTowardsCrosshair();
-
-	bool GetSightRayHitLocation(FVector& OUT_HL);
-
-
-	//
+	
+	////
 
 	UPROPERTY(EditAnywhere)
 	float crosshairLocationX = 0.5;
@@ -56,8 +44,8 @@ public:
 
 	FHitResult TankAimResult;
 
-	UFUNCTION(BlueprintImplementableEvent,category = "Setup")
-	void FoundUIAimingComponent(UTankAimmingComponent* AimComRef);
+	ATank* PlayerTank;
 
-	
+	bool GetSightRayHitLocation(FVector& OUT_HL);
+
 };

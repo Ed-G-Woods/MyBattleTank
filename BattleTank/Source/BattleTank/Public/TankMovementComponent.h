@@ -24,13 +24,15 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void IntendToTurn(float s);
 
-	UTankTrack* L_Track;
-	UTankTrack* R_Track;
-	
 	UFUNCTION(BlueprintCallable)
 		void Initialise(UTankTrack* L_Track, UTankTrack* R_Track);
 
 	virtual void RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed)override;
+
+
+
+	UTankTrack* L_Track;
+	UTankTrack* R_Track;
 
 	
 };

@@ -8,7 +8,6 @@
 
 class UTankMovementComponent;
 class UTankAimmingComponent;
-class AProjectile;
 
 
 UCLASS()
@@ -23,7 +22,7 @@ public:
 	void AimAt(FVector HitLocation);
 
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadWrite)
 		UTankAimmingComponent* TankAimmingComponent = nullptr;
 
 
@@ -45,10 +44,6 @@ public:
 	void FiringStateCheck();
 
 
-	UPROPERTY(EditDefaultsOnly)
-		float LaunchSpeed = 10000.0;
-	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite)
-		TSubclassOf<AProjectile> projectile;
 	UPROPERTY(EditDefaultsOnly)
 	float ReloadTime = 3;
 
