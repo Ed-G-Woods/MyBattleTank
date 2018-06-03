@@ -14,13 +14,24 @@ class BATTLETANK_API UTankTrack : public UStaticMeshComponent
 {
 	GENERATED_BODY()
 
+private:
+
+	virtual void BeginPlay()override;
+
+	float Throttle=0;
+
+	float LastLandTime;
 
 public:
 	//Sets a throttle between -1 and +1
 	UFUNCTION(BlueprintCallable)
 		void SetThrottle(float t);
+
+	void MoveTrack();
 	
 	UPROPERTY(EditDefaultsOnly)
-		float DrivingForce = 8000000;
+		float DrivingForce = 40000000;
 	
+	UFUNCTION()
+	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
 };

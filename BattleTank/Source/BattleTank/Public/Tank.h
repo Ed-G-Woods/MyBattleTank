@@ -21,10 +21,10 @@ public:
 
 	void AimAt(FVector HitLocation);
 
+	UFUNCTION(BlueprintCallable)
+		void Fire();
 
-	UPROPERTY(BlueprintReadWrite)
-		UTankAimmingComponent* TankAimmingComponent = nullptr;
-
+	void FiringStateCheck();
 
 protected:
 	// Called when the game starts or when spawned
@@ -33,22 +33,9 @@ protected:
 
 
 public:	
-	// Called every frame
-
-	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UFUNCTION(BlueprintCallable)
-		void Fire();
-
-	void FiringStateCheck();
-
-
-	UPROPERTY(EditDefaultsOnly)
-	float ReloadTime = 3;
-
-
-	float LastFireTime = 0;
-
+	UPROPERTY(BlueprintReadWrite)
+		UTankAimmingComponent* TankAimmingComponent = nullptr;
 
 };

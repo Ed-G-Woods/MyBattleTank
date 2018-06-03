@@ -20,7 +20,7 @@ void ATankAIController::Tick(float Deltatime)
 
 	if (playerTank)
 	{
-		MoveToActor(playerTank, 600);
+		MoveToActor(playerTank, 1000);
 
 
 		aiTank->AimAt(playerTank->GetTargetLocation());

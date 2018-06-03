@@ -18,8 +18,6 @@ UTankAimmingComponent::UTankAimmingComponent()
 	// ...
 }
 
-
-// Called when the game starts
 void UTankAimmingComponent::BeginPlay()
 {
 	Super::BeginPlay();
@@ -30,14 +28,6 @@ void UTankAimmingComponent::BeginPlay()
 	
 }
 
-
-// // Called every frame
-// void UTankAimmingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-// {
-// 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-// 
-// 	// ...
-// }
 
 void UTankAimmingComponent::AimAt(FVector a)
 {
@@ -77,6 +67,7 @@ void UTankAimmingComponent::AimAt(FVector a)
 
 
 }
+
 void UTankAimmingComponent::MoveBarrelAndTurret(FVector AimDirection)
 {
 	if (!ensure(Barrel && Turret)) { return; }
@@ -84,26 +75,58 @@ void UTankAimmingComponent::MoveBarrelAndTurret(FVector AimDirection)
 	FRotator BarrelRotatorNow = Barrel->GetForwardVector().Rotation();
 	FRotator BarrelRotatorDesire = AimDirection.Rotation();
 
-	if (BarrelRotatorNow == BarrelRotatorDesire) { islocked = true; }else { islocked = false; }
+	//Player Aimming Lock Check
+	if (GetOwner() == GetWorld()->GetFirstPlayerController()->GetPawn())
+	{
+		if (BarrelRotatorNow.Equals(BarrelRotatorDesire, LockTolerance)) {islocked = true;}else {islocked = false;}
+	}
 	
 	
 	Barrel->Elevate(BarrelRotatorDesire.Pitch - BarrelRotatorNow.Pitch);
 	Turret->AddYawRotation(BarrelRotatorDesire.Yaw - BarrelRotatorNow.Yaw);
 
-	//UE_LOG(LogTemp, Warning, TEXT("%s   :N:D:   %s"), *(FString::SanitizeFloat(BarrelRotatorNow.Yaw)), *(FString::SanitizeFloat(BarrelRotatorDesire.Yaw)));
+}
 
+void UTankAimmingComponent::Fire()
+{
+	if (GetWorld()->GetTimeSeconds() - LastFireTime > ReloadTime)
+	{
+		SpawnProjectileAndLaunch();
+
+		LastFireTime = GetWorld()->GetTimeSeconds();
+
+	}
 }
 
 void UTankAimmingComponent::SpawnProjectileAndLaunch()
 {
-
 	auto P = GetWorld()->SpawnActor<AProjectile>(projectile,
-												Barrel->GetSocketLocation(FName("FireLocation")),
-												Barrel->GetSocketRotation(FName("FireLocation"))
-												);
+		Barrel->GetSocketLocation(FName("FireLocation")),
+		Barrel->GetSocketRotation(FName("FireLocation"))
+		);
 
 	P->LaunchProjectile(ProjectileLaunchSpeed);
+}
 
+void UTankAimmingComponent::FiringStateCheck()
+{
+	if (GetWorld()->GetTimeSeconds() - LastFireTime > ReloadTime)
+	{
+		isReloaded = true;
+		if (islocked)
+		{
+			firingstatus = EFiringStatus::Locked;
+		}
+		else
+		{
+			firingstatus = EFiringStatus::Aiming;
+		}
+	}
+	else
+	{
+		isReloaded = false;
+		firingstatus = EFiringStatus::Reloading;
+	}
 }
 
 void UTankAimmingComponent::TankAimmingComponentSetup(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet)

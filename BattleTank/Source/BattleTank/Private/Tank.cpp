@@ -29,60 +29,24 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 }
 
 
-
 void ATank::AimAt(FVector HitLocation)
 {
-	if (!TankAimmingComponent) { return; }
+	if (!ensure(TankAimmingComponent)) { return; }
 
 	TankAimmingComponent->AimAt(HitLocation);
 }
-
 
 void ATank::Fire()
 {
 	if (!ensure(TankAimmingComponent)) { return ; }
 
-	//UE_LOG(LogTemp, Warning, TEXT("-----!FIRE!------"))
-	
-	
-	 bool isReloaded= GetWorld()->GetTimeSeconds()-LastFireTime > ReloadTime;
-
-	if (isReloaded)
-	{
-		TankAimmingComponent->SpawnProjectileAndLaunch();
-
-		LastFireTime = GetWorld()->GetTimeSeconds();
-	}
-	else
-	{
-
-	}
-
-
+	TankAimmingComponent->Fire();
 }
 
 void ATank::FiringStateCheck()
 {
 	if (!ensure(TankAimmingComponent)) { return; }
 
-	if (GetWorld()->GetTimeSeconds() - LastFireTime > ReloadTime)
-	{
-		if (TankAimmingComponent->islocked)
-		{
-			TankAimmingComponent->firingstatus = EFiringStatus::Locked;
-			UE_LOG(LogTemp, Warning, TEXT("Locked"))
-		}
-		else
-		{
-			TankAimmingComponent->firingstatus = EFiringStatus::Aiming;
-			UE_LOG(LogTemp, Warning, TEXT("Aiming"))
-		}
-	}
-	else
-	{
-		TankAimmingComponent->firingstatus = EFiringStatus::Reloading;
-		UE_LOG(LogTemp, Warning, TEXT("Reloading"))
-	}
-
+	TankAimmingComponent->FiringStateCheck();
 }
 

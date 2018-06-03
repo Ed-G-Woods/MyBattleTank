@@ -34,7 +34,11 @@ public:
 
 	void MoveBarrelAndTurret(FVector AimDirection);
 
+	void Fire();
+
 	void SpawnProjectileAndLaunch();
+
+	void FiringStateCheck();
 
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 		void TankAimmingComponentSetup(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet);
@@ -45,10 +49,6 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
-/*	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;*/
-
-	bool islocked;
 
 	UTankBarrel * Barrel = nullptr;
 
@@ -65,6 +65,17 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, category = "i")
 		TSubclassOf<AProjectile> projectile;
 
+	UPROPERTY(EditDefaultsOnly, category = "i")
+		float ReloadTime = 3;
+	
+	UPROPERTY(EditDefaultsOnly, category = "i")
+		float LockTolerance = 2;
+
+	float LastFireTime = 0;
+
 private:
 
+	bool islocked;
+
+	bool isReloaded;
 };
