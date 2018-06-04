@@ -12,7 +12,7 @@ void UTankTurret::AddYawRotation(float Speed)
 	{
 		Speed *= -1;
 	}
-
+	
 	//
 	Speed = FMath::Clamp(Speed, -1.0f, 1.0f);
 	float YawPerFrame = Speed * MaxDegreesPerSecond *GetWorld()->DeltaTimeSeconds;

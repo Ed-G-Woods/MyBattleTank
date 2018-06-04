@@ -75,10 +75,13 @@ void UTankAimmingComponent::MoveBarrelAndTurret(FVector AimDirection)
 	FRotator BarrelRotatorNow = Barrel->GetForwardVector().Rotation();
 	FRotator BarrelRotatorDesire = AimDirection.Rotation();
 
-	//Player Aimming Lock Check
 	if (GetOwner() == GetWorld()->GetFirstPlayerController()->GetPawn())
 	{
-		if (BarrelRotatorNow.Equals(BarrelRotatorDesire, LockTolerance)) {islocked = true;}else {islocked = false;}
+		if (BarrelRotatorNow.Equals(BarrelRotatorDesire, PlayerLockTolerance)) {isPlayerlocked = true;}else {isPlayerlocked = false;}
+	}
+	else
+	{
+		if (BarrelRotatorNow.Equals(BarrelRotatorDesire, AILockTolerance)) { isAIlocked = true; }else { isAIlocked = false; }
 	}
 	
 	
@@ -113,7 +116,7 @@ void UTankAimmingComponent::FiringStateCheck()
 	if (GetWorld()->GetTimeSeconds() - LastFireTime > ReloadTime)
 	{
 		isReloaded = true;
-		if (islocked)
+		if (isPlayerlocked)
 		{
 			firingstatus = EFiringStatus::Locked;
 		}
@@ -127,6 +130,11 @@ void UTankAimmingComponent::FiringStateCheck()
 		isReloaded = false;
 		firingstatus = EFiringStatus::Reloading;
 	}
+}
+
+bool UTankAimmingComponent::B_isAIlocked()
+{
+	return isAIlocked;
 }
 
 void UTankAimmingComponent::TankAimmingComponentSetup(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet)

@@ -40,6 +40,8 @@ public:
 
 	void FiringStateCheck();
 
+	bool B_isAIlocked();
+
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 		void TankAimmingComponentSetup(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet);
 
@@ -69,13 +71,19 @@ public:
 		float ReloadTime = 3;
 	
 	UPROPERTY(EditDefaultsOnly, category = "i")
-		float LockTolerance = 2;
+		float PlayerLockTolerance = 2;
+	UPROPERTY(EditDefaultsOnly, category = "i")
+		float AILockTolerance = 5;
 
 	float LastFireTime = 0;
 
+
+
 private:
 
-	bool islocked;
+	bool isAIlocked;
+
+	bool isPlayerlocked;
 
 	bool isReloaded;
 };

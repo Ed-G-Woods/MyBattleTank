@@ -20,13 +20,16 @@ void ATankAIController::Tick(float Deltatime)
 
 	if (playerTank)
 	{
-		MoveToActor(playerTank, 1000);
+		MoveToActor(playerTank, AcceptanceRadius);
 
 
 		aiTank->AimAt(playerTank->GetTargetLocation());
 
 
-		aiTank->Fire();
+		if (aiTank->isAIAimmingLocked())
+		{
+			aiTank->Fire();
+		}
 	}
 
 }

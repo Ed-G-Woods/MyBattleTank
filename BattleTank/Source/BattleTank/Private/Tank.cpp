@@ -50,3 +50,9 @@ void ATank::FiringStateCheck()
 	TankAimmingComponent->FiringStateCheck();
 }
 
+bool ATank::isAIAimmingLocked()const
+{
+	return TankAimmingComponent->B_isAIlocked();
+
+}
+

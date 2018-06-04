@@ -25,5 +25,8 @@ public:
 
 	ATank* aiTank ;
 	ATank* playerTank ;
+
+	UPROPERTY(EditDefaultsOnly)
+		float AcceptanceRadius = 7000;
 	
 };
