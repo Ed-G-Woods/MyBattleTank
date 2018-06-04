@@ -92,12 +92,11 @@ void UTankAimmingComponent::MoveBarrelAndTurret(FVector AimDirection)
 
 void UTankAimmingComponent::Fire()
 {
-	if (GetWorld()->GetTimeSeconds() - LastFireTime > ReloadTime)
+	if (GetWorld()->GetTimeSeconds() - LastFireTime > ReloadTime && Ammo > 0)
 	{
 		SpawnProjectileAndLaunch();
-
+		Ammo -= 1;
 		LastFireTime = GetWorld()->GetTimeSeconds();
-
 	}
 }
 
@@ -129,6 +128,10 @@ void UTankAimmingComponent::FiringStateCheck()
 	{
 		isReloaded = false;
 		firingstatus = EFiringStatus::Reloading;
+	}
+	if (Ammo == 0)
+	{
+		firingstatus = EFiringStatus::OutOfAmmo;
 	}
 }
 

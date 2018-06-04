@@ -28,7 +28,6 @@ void ATankPlayerController::Tick(float DeltaTime)
 
 	PlayerTank->FiringStateCheck();
 	
-
 }
 
 

@@ -12,7 +12,8 @@ enum class EFiringStatus : uint8
 {
 	Locked,
 	Aiming,
-	Reloading
+	Reloading,
+	OutOfAmmo
 };
 
 
@@ -74,6 +75,8 @@ public:
 		float PlayerLockTolerance = 2;
 	UPROPERTY(EditDefaultsOnly, category = "i")
 		float AILockTolerance = 5;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, category = "i")
+		int32 Ammo = 3;
 
 	float LastFireTime = 0;
 
@@ -86,4 +89,6 @@ private:
 	bool isPlayerlocked;
 
 	bool isReloaded;
+
+
 };

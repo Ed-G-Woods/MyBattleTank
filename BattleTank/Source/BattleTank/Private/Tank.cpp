@@ -39,8 +39,9 @@ void ATank::AimAt(FVector HitLocation)
 void ATank::Fire()
 {
 	if (!ensure(TankAimmingComponent)) { return ; }
-
+	
 	TankAimmingComponent->Fire();
+	
 }
 
 void ATank::FiringStateCheck()
