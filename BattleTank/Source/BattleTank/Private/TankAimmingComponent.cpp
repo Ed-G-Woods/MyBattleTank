@@ -63,9 +63,6 @@ void UTankAimmingComponent::AimAt(FVector a)
 	/*UE_LOG(LogTemp, Warning, TEXT("%s Aiming  %s"),*(GetOwner()->GetName()),*(OutLaunchVelocity.ToString()));*/
 
 
-
-
-
 }
 
 void UTankAimmingComponent::MoveBarrelAndTurret(FVector AimDirection)
