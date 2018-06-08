@@ -4,6 +4,10 @@
 #include "Runtime/Engine/Classes/GameFramework/ProjectileMovementComponent.h"
 #include "Runtime/Engine/Classes/Particles/ParticleSystemComponent.h"
 #include "Runtime/Engine/Classes/Components/StaticMeshComponent.h"
+#include "Runtime/Engine/Classes/PhysicsEngine/RadialForceComponent.h"
+#include "Engine/World.h"
+#include "Runtime/Engine/Public/TimerManager.h"
+#include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 
 // Sets default values
 AProjectile::AProjectile()
@@ -22,6 +26,9 @@ AProjectile::AProjectile()
 	ImpactBlast = CreateDefaultSubobject<UParticleSystemComponent>(FName("ImpactBlast"));
 	ImpactBlast->SetupAttachment(RootComponent);
 	ImpactBlast->bAutoActivate = false;
+	ExplosionForce = CreateDefaultSubobject<URadialForceComponent>(FName("ExplosionRadial"));
+	ExplosionForce->SetupAttachment(RootComponent);
+
 
 }
 
@@ -50,10 +57,19 @@ void AProjectile::LaunchProjectile(float speed)
 
 void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Projectile Hit"));
 
 	LaunchBlast->Deactivate();
 	ImpactBlast->Activate();
 	CollisionMesh->SetVisibility(false);
 	CollisionMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	ExplosionForce->FireImpulse();
+
+	
+	if (noDamageyet)
+	{
+		UGameplayStatics::ApplyRadialDamage(this, ProjectileDamage, GetActorLocation(), ExplosionForce->Radius, UDamageType::StaticClass(), TArray<AActor*>());
+		noDamageyet = false;
+	}
 }
+

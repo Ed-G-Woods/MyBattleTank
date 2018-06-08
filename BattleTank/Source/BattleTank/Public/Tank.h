@@ -24,9 +24,14 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void Fire();
 
+	UPROPERTY(EditDefaultsOnly)
+		float TankHP =100;
+
 	void FiringStateCheck();
 
 	bool isAIAimmingLocked() const;
+
+	float TakeDamage(float DamageAmount, struct FDamageEvent const & DamageEvent, class AController * EventInstigator, AActor * DamageCauser)override;
 
 protected:
 	// Called when the game starts or when spawned

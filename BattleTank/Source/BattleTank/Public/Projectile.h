@@ -8,6 +8,7 @@
 
 class UProjectileMovementComponent;
 class UParticleSystemComponent;
+class URadialForceComponent;
 
 UCLASS()
 class BATTLETANK_API AProjectile : public AActor
@@ -28,6 +29,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UPROPERTY(EditDefaultsOnly)
+		float ProjectileDamage=20;
 
 	UFUNCTION()
 		void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
@@ -45,5 +48,9 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	UParticleSystemComponent* ImpactBlast;
 
-	
+	UPROPERTY(VisibleAnywhere)
+	URadialForceComponent* ExplosionForce;
+
+	bool noDamageyet = true;
+
 };
