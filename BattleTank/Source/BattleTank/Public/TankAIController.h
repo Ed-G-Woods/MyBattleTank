@@ -22,11 +22,15 @@ public:
 	virtual void BeginPlay() override;
 	virtual void Tick(float Deltatime) override;
 
+	virtual void SetPawn(APawn* InPawn) override;
 
 	ATank* aiTank ;
 	ATank* playerTank ;
 
 	UPROPERTY(EditDefaultsOnly)
 		float AcceptanceRadius = 7000;
+
+	UFUNCTION()
+		void OnPossedTankDeath();
 	
 };

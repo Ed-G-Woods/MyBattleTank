@@ -24,22 +24,53 @@ void ATankPlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	AimTowardsCrosshair();
 
-	PlayerTank->FiringStateCheck();
+	if (GetPawn()) 
+	{
+		AimTowardsCrosshair();
+
+		PlayerTank->FiringStateCheck();
+
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Spectating!"));
+	}
 	
+}
+
+void ATankPlayerController::SetPawn(APawn * InPawn)
+{
+	Super::SetPawn(InPawn);
+
+	if (InPawn)
+	{
+		auto PossessedTank = Cast<ATank>(InPawn);
+		if (!ensure(PossessedTank)) { return; }
+
+		PossessedTank->OnDie.AddUniqueDynamic(this, &ATankPlayerController::OnPossedTankDeath);
+	}
 }
 
 
 void ATankPlayerController::AimTowardsCrosshair()
 {
 	FVector HitLocation;
+	
+
 	if (GetSightRayHitLocation(HitLocation))
 	{
 		GetControlledTank()->AimAt(HitLocation);
 	}
 
 
+}
+
+void ATankPlayerController::OnPossedTankDeath()
+{
+	UE_LOG(LogTemp, Warning, TEXT("You Die!"));
+	
+	StartSpectatingOnly();
 }
 
 bool ATankPlayerController::GetSightRayHitLocation(FVector& OUT_HL)

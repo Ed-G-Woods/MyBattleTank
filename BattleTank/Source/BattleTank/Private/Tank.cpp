@@ -59,16 +59,13 @@ bool ATank::isAIAimmingLocked()const
 
 float ATank::TakeDamage(float DamageAmount, struct FDamageEvent const & DamageEvent, class AController * EventInstigator, AActor * DamageCauser)
 {
-	if (TankHP > 0)
+	TankHP -= DamageAmount;
+	UE_LOG(LogTemp, Warning, TEXT("Damage: %f"), TankHP);
+	if (TankHP <= 0)
 	{
-		TankHP -= DamageAmount;
-		UE_LOG(LogTemp, Warning, TEXT("Damage: %f"), TankHP);
+		OnDie.Broadcast();
 	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Die: %f"), TankHP);
-	}
-
+	
 	return TankHP;
 }
 

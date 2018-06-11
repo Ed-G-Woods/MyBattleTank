@@ -9,6 +9,7 @@
 class UTankMovementComponent;
 class UTankAimmingComponent;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTankDelegate);
 
 UCLASS()
 class BATTLETANK_API ATank : public APawn
@@ -18,6 +19,8 @@ class BATTLETANK_API ATank : public APawn
 public:
 	// Sets default values for this pawn's properties
 	ATank();
+
+	FTankDelegate OnDie;
 
 	void AimAt(FVector HitLocation);
 

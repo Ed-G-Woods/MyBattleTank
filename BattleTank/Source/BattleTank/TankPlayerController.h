@@ -23,11 +23,17 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
+	virtual void SetPawn(APawn* InPawn)override;
+
 	UFUNCTION(BlueprintCallable)
 	ATank * GetControlledTank() const;
 
+	UFUNCTION()
+	void OnPossedTankDeath();
+
 	void AimTowardsCrosshair();
 	
+	bool GetSightRayHitLocation(FVector& OUT_HL);
 	////
 
 	UPROPERTY(EditAnywhere)
@@ -42,10 +48,10 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 	FVector AimEndLocation;
 
+
 	FHitResult TankAimResult;
 
 	ATank* PlayerTank;
 
-	bool GetSightRayHitLocation(FVector& OUT_HL);
 
 };
