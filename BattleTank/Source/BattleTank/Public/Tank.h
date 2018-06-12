@@ -27,8 +27,11 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void Fire();
 
-	UPROPERTY(BlueprintReadOnly)
-		float TankHP =100;	//Default 100hp
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly,category = "i")
+		float TankMaxHP = 100;	//Default 100hp
+	UPROPERTY(BlueprintReadOnly, category = "i")
+		float TankHP ;	//Default 100hp
+
 
 	void FiringStateCheck();
 
