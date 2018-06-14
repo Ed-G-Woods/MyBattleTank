@@ -19,25 +19,20 @@ class BATTLETANK_API ATank : public APawn
 public:
 	// Sets default values for this pawn's properties
 	ATank();
-
+	float TakeDamage(float DamageAmount, struct FDamageEvent const & DamageEvent, class AController * EventInstigator, AActor * DamageCauser)override;
+	
+	
 	FTankDelegate OnDie;
-
-	void AimAt(FVector HitLocation);
 
 	UFUNCTION(BlueprintCallable)
 		void Fire();
 
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly,category = "i")
-		float TankMaxHP = 100;	//Default 100hp
-	UPROPERTY(BlueprintReadOnly, category = "i")
-		float TankHP ;	//Default 100hp
-
+	void AimAt(FVector HitLocation);
 
 	void FiringStateCheck();
 
 	bool isAIAimmingLocked() const;
 
-	float TakeDamage(float DamageAmount, struct FDamageEvent const & DamageEvent, class AController * EventInstigator, AActor * DamageCauser)override;
 
 protected:
 	// Called when the game starts or when spawned
@@ -46,9 +41,14 @@ protected:
 
 
 public:	
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, category = "i")
+		float TankMaxHP = 100;	//Default 100hp
+	UPROPERTY(BlueprintReadOnly, category = "i")
+		float TankHP;	//Default 100hp
 
 	UPROPERTY(BlueprintReadWrite)
 		UTankAimmingComponent* TankAimmingComponent = nullptr;
+
+	
 
 };

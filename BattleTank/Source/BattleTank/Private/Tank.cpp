@@ -18,40 +18,33 @@ void ATank::BeginPlay()
 	TankHP = TankMaxHP;
 }
 
-void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-}
-
+//Function to TankAimmingComponent*
 
 void ATank::AimAt(FVector HitLocation)
 {
-	if (!ensure(TankAimmingComponent)) { return; }
+	if (!TankAimmingComponent) { UE_LOG(LogTemp, Warning, TEXT("Tank.cpp.30")); return; }
 
 	TankAimmingComponent->AimAt(HitLocation);
 }
-
 void ATank::Fire()
 {
-	if (!ensure(TankAimmingComponent)) { return ; }
+	if (!TankAimmingComponent) { UE_LOG(LogTemp, Warning, TEXT("Tank.cpp.37")); return ; }
 	
 	TankAimmingComponent->Fire();
-	
 }
-
 void ATank::FiringStateCheck()
 {
-	if (!ensure(TankAimmingComponent)) { return; }
+	if (!TankAimmingComponent) { UE_LOG(LogTemp, Warning, TEXT("Tank.cpp.45")); return; }
 
 	TankAimmingComponent->FiringStateCheck();
 }
-
 bool ATank::isAIAimmingLocked()const
 {
 	return TankAimmingComponent->B_isAIlocked();
-
 }
+
+//
 
 float ATank::TakeDamage(float DamageAmount, struct FDamageEvent const & DamageEvent, class AController * EventInstigator, AActor * DamageCauser)
 {
