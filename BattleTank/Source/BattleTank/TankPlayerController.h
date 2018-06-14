@@ -20,13 +20,9 @@ class BATTLETANK_API ATankPlayerController : public APlayerController
 	
 public:
 	virtual void BeginPlay() override;
-
 	virtual void Tick(float DeltaTime) override;
-
 	virtual void SetPawn(APawn* InPawn)override;
 
-	UFUNCTION(BlueprintCallable)
-	ATank * GetControlledTank() const;
 
 	UFUNCTION()
 	void OnPossedTankDeath();
@@ -34,24 +30,26 @@ public:
 	void AimTowardsCrosshair();
 	
 	bool GetSightRayHitLocation(FVector& OUT_HL);
+
 	////
 
-	UPROPERTY(EditAnywhere)
-	float crosshairLocationX = 0.5;
+	UPROPERTY(EditAnywhere, category = "i")
+		float crosshairLocationX = 0.5;
+	UPROPERTY(EditAnywhere, category = "i")
+		float crosshairLocationY = 0.3;
 
-	UPROPERTY(EditAnywhere)
-	float crosshairLocationY = 0.3;
+	UPROPERTY(EditDefaultsOnly,category = "i")
+		float AimRange = 1000000.0f;
+	UPROPERTY(BlueprintReadOnly)
+		FVector AimStartLocation;
+	UPROPERTY(BlueprintReadOnly)
+		FVector AimEndLocation;
 
 	UPROPERTY(BlueprintReadOnly)
-	FVector AimStartLocation;
+		ATank* PlayerTank = nullptr;
 
-	UPROPERTY(BlueprintReadOnly)
-	FVector AimEndLocation;
-
+	bool isPlayerDie = false;
 
 	FHitResult TankAimResult;
-
-	ATank* PlayerTank;
-
 
 };

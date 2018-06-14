@@ -8,37 +8,24 @@
 
 void ATankPlayerController::BeginPlay()
 {
+	PlayerTank = Cast<ATank>(GetPawn());
+	//Set PlayerTank before BeginPlay Blueprint
 	Super::BeginPlay();
-
-	PlayerTank = GetControlledTank();
-
 }
-
-ATank * ATankPlayerController::GetControlledTank() const
-{
-	return Cast<ATank>(GetPawn());
-
-}
-
 void ATankPlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-
-	if (GetPawn()) 
+	if (!isPlayerDie)
 	{
 		AimTowardsCrosshair();
-
 		PlayerTank->FiringStateCheck();
-
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Spectating!"));
+	//	UE_LOG(LogTemp, Warning, TEXT("Player Died!Spectating!"));
 	}
-	
 }
-
 void ATankPlayerController::SetPawn(APawn * InPawn)
 {
 	Super::SetPawn(InPawn);
@@ -46,30 +33,27 @@ void ATankPlayerController::SetPawn(APawn * InPawn)
 	if (InPawn)
 	{
 		auto PossessedTank = Cast<ATank>(InPawn);
-		if (!ensure(PossessedTank)) { return; }
-
+		if (!PossessedTank) { UE_LOG(LogTemp, Warning, TEXT("Possessed Pawn not ATank,ATank->OnDie.AddUniqueDynamic failure")); return; }
 		PossessedTank->OnDie.AddUniqueDynamic(this, &ATankPlayerController::OnPossedTankDeath);
 	}
 }
 
 
+////
+
 void ATankPlayerController::AimTowardsCrosshair()
 {
 	FVector HitLocation;
-	
-
 	if (GetSightRayHitLocation(HitLocation))
 	{
-		GetControlledTank()->AimAt(HitLocation);
+		PlayerTank->AimAt(HitLocation);
 	}
-
-
 }
 
 void ATankPlayerController::OnPossedTankDeath()
 {
 	UE_LOG(LogTemp, Warning, TEXT("You Die!"));
-	
+	isPlayerDie = true;
 	StartSpectatingOnly();
 }
 
@@ -87,10 +71,10 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OUT_HL)
 
 	if (DeprojectScreenPositionToWorld(ViewportSizeX * crosshairLocationX, ViewportSizeY * crosshairLocationY, AimStartLocation, DeprojectWorldDirection))
 	{
-	
-		AimEndLocation = AimStartLocation + (DeprojectWorldDirection * 1000000);
+		AimEndLocation = AimStartLocation + (DeprojectWorldDirection * AimRange);
 
-		if (GetWorld()->LineTraceSingleByChannel(
+		if (GetWorld()->LineTraceSingleByChannel
+			(
 			TankAimResult,
 			AimStartLocation,
 			AimEndLocation,
@@ -103,13 +87,11 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OUT_HL)
 		}
 		else
 		{
-
+			OUT_HL = AimEndLocation;
 		}
 	}
 
-
-
-	return TankAimResult.IsValidBlockingHit();
+	return true;
 }
 
 

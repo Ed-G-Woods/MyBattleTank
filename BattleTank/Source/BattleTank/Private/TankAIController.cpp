@@ -41,18 +41,14 @@ void ATankAIController::SetPawn(APawn * InPawn)
 	if (InPawn)
 	{
 		auto PossessedTank = Cast<ATank>(InPawn);
-		if (!ensure(PossessedTank)) { return; }
-
+		if (!PossessedTank) { UE_LOG(LogTemp, Warning, TEXT("Possessed Pawn not ATank,ATank->OnDie.AddUniqueDynamic failure")); return; }
 		PossessedTank->OnDie.AddUniqueDynamic(this, &ATankAIController::OnPossedTankDeath);
 	}
 }
 
 void ATankAIController::OnPossedTankDeath()
 {
-	
 	UE_LOG(LogTemp, Warning, TEXT("Ai Destoryed!"));
-
 	GetPawn()->DetachFromControllerPendingDestroy();
-	
 }
 
