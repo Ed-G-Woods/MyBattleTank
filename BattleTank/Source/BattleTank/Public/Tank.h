@@ -26,11 +26,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		void Fire();
-
 	void AimAt(FVector HitLocation);
-
 	void FiringStateCheck();
-
 	bool isAIAimmingLocked() const;
 
 

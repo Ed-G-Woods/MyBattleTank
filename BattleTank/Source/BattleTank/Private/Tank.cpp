@@ -16,6 +16,8 @@ void ATank::BeginPlay()
 	Super::BeginPlay();
 
 	TankHP = TankMaxHP;
+
+	
 }
 
 

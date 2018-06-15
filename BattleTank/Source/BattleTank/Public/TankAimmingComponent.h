@@ -80,8 +80,6 @@ public:
 
 	float LastFireTime = 0;
 
-
-
 private:
 
 	bool isAIlocked;
