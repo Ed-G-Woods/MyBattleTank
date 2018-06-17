@@ -4,6 +4,7 @@
 #include "TankAimmingComponent.h"
 #include "TankMovementComponent.h"
 #include "Engine/World.h"
+#include "OOxxObject.h"
 
 // Sets default values
 ATank::ATank()
@@ -17,7 +18,18 @@ void ATank::BeginPlay()
 
 	TankHP = TankMaxHP;
 
-	
+
+	///Create Object test
+	auto a = NewObject<UOOxxObject>();
+	if (a)
+	{
+		a->OOxxString = FString("OOOOOOOOO");
+		UE_LOG(LogTemp, Warning, TEXT("XXXXX %s"),*(a->OOxxString));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("XXXXXXXXXXXXXXXXXXXXXXX"));
+	}
 }
 
 

@@ -2,42 +2,46 @@
 
 #include "TankTrack.h"
 #include "Engine/World.h"
-
+#include "MassWheelConstraint.h"
+#include "WheelSpawn.h"
 
 
 void UTankTrack::BeginPlay()
 {
 	Super::BeginPlay();
-	OnComponentHit.AddDynamic(this, &UTankTrack::OnHit);
+
+	//MyMWC = getMWC();
+
+}
+
+TArray<AMassWheelConstraint*> UTankTrack::getMWC() const
+{
+
+	TArray<AMassWheelConstraint*> MassWheelConstraintArray;
+	TArray<USceneComponent*> WheelSpawnArray;
+	GetChildrenComponents(false, WheelSpawnArray);
+	for (USceneComponent* WheelSpawn : WheelSpawnArray)
+	{
+	
+		auto mwc = Cast<UWheelSpawn>(WheelSpawn)->MWC;
+		MassWheelConstraintArray.Add(mwc);
+	}
+	
+	return MassWheelConstraintArray;
 }
 
 void UTankTrack::SetThrottle(float t)
 {
-	if (GetWorld()->GetTimeSeconds() - LastLandTime < 3* GetWorld()->GetDeltaSeconds())
-	{
-		auto Force = GetForwardVector() * t * DrivingForce;
-		auto ForeLocation = GetComponentLocation();
-		auto TankRoot = Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent());
-		AddForceAtLocation(Force, ForeLocation);
-
-		//UE_LOG(LogTemp, Warning, TEXT("time = %f ,%s Land"), GetWorld()->GetTimeSeconds(), *GetOwner()->GetName())
-	}
-	else
-	{
-		//UE_LOG(LogTemp, Warning, TEXT("time = %f ,%s Fall"), GetWorld()->GetTimeSeconds(), *GetOwner()->GetName())
-	}
-	
+	auto Force = GetForwardVector() * t * DrivingForce;
+	MoveTrack(Force);
 }
 
-void UTankTrack::MoveTrack()
+void UTankTrack::MoveTrack(FVector force)
 {
-
-	UE_LOG(LogTemp, Warning, TEXT("throttle = %f ") ,Throttle)
-	//TankRoot->AddForceAtLocation(Force, ForeLocation);
+	if (!isMWCfound) { MyMWC = getMWC(); isMWCfound = true; }
+	for (AMassWheelConstraint* MWC:MyMWC)
+	{
+		MWC->AddAxleForce(force/4);
+	}
 }
 
-void UTankTrack::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
-{
-	LastLandTime = GetWorld()->GetTimeSeconds();
-
-}

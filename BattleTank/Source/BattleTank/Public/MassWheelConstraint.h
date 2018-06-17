@@ -7,6 +7,7 @@
 #include "MassWheelConstraint.generated.h"
 
 class UPhysicsConstraintComponent;
+class USphereComponent;
 
 UCLASS()
 class BATTLETANK_API AMassWheelConstraint : public AActor
@@ -19,18 +20,23 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void SetupConstraint();
+
+	void AddAxleForce(FVector Force);
+
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
 	
 private:
 	UPROPERTY(VisibleAnywhere)
-		UStaticMeshComponent* Mass;
+		USphereComponent* Wheel;
 	UPROPERTY(VisibleAnywhere)
-		UStaticMeshComponent* Wheel;
+		USphereComponent* Axle;
 	UPROPERTY(VisibleAnywhere)
 		UPhysicsConstraintComponent* PhysicsConstraint;
+	UPROPERTY(VisibleAnywhere)
+		UPhysicsConstraintComponent* AxleConstraint;
 };

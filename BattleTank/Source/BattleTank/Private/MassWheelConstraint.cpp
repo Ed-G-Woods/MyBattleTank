@@ -3,6 +3,7 @@
 #include "MassWheelConstraint.h"
 #include "Runtime/Engine/Classes/PhysicsEngine/PhysicsConstraintComponent.h"
 #include "Runtime/Engine/Classes/Components/StaticMeshComponent.h"
+#include "Runtime/Engine/Classes/Components/SphereComponent.h"
 
 // Sets default values
 AMassWheelConstraint::AMassWheelConstraint()
@@ -13,11 +14,14 @@ AMassWheelConstraint::AMassWheelConstraint()
 	PhysicsConstraint = CreateDefaultSubobject<UPhysicsConstraintComponent>(FName("PhysicsConstraint"));
 	SetRootComponent(PhysicsConstraint);
 
-	Mass = CreateDefaultSubobject<UStaticMeshComponent>(FName("Mass"));
-	Mass->SetupAttachment(RootComponent);
+	Axle = CreateDefaultSubobject<USphereComponent>(FName("Axle"));
+	Axle->SetupAttachment(RootComponent);
 
-	Wheel = CreateDefaultSubobject<UStaticMeshComponent>(FName("Wheel"));
-	Wheel->SetupAttachment(RootComponent);
+	AxleConstraint = CreateDefaultSubobject<UPhysicsConstraintComponent>(FName("AxleConstraint"));
+	AxleConstraint->SetupAttachment(Axle);
+
+	Wheel = CreateDefaultSubobject<USphereComponent>(FName("Wheel"));
+	Wheel->SetupAttachment(Axle);
 
 }
 
@@ -26,19 +30,8 @@ void AMassWheelConstraint::BeginPlay()
 {
 	Super::BeginPlay();
 
-	auto parent = GetAttachParentActor();
+	SetupConstraint();
 
-	if (parent)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Parent:-. %s"),*parent->GetName())
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("No Parent Found"))
-	}
-
-		
-	
 }
 
 // Called every frame
@@ -46,5 +39,20 @@ void AMassWheelConstraint::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void AMassWheelConstraint::SetupConstraint()
+{
+	if (!GetAttachParentActor()) { return; }
+	UPrimitiveComponent* BodyRoot = Cast<UPrimitiveComponent>(GetAttachParentActor()->GetRootComponent());
+	if (!BodyRoot) { return; }
+	PhysicsConstraint->SetConstrainedComponents(BodyRoot, NAME_None, Axle, NAME_None);
+
+	AxleConstraint->SetConstrainedComponents(Axle, NAME_None, Wheel, NAME_None);
+}
+
+void AMassWheelConstraint::AddAxleForce(FVector Force)
+{
+	Axle->AddForce(Force);
 }
 

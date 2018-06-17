@@ -24,10 +24,13 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
+
+
 public:	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, category = "i")
 		TSubclassOf<AMassWheelConstraint> MassWheelConstraint;
 
+	AMassWheelConstraint* MWC = nullptr;
 		
 	
 };

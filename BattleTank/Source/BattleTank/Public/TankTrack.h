@@ -6,6 +6,9 @@
 #include "Components/StaticMeshComponent.h"
 #include "TankTrack.generated.h"
 
+
+class AMassWheelConstraint;
+
 /**
  * 
  */
@@ -22,16 +25,19 @@ private:
 
 	float LastLandTime;
 
+	bool isMWCfound = false;
+
+	TArray<AMassWheelConstraint*> getMWC() const;
+	TArray<AMassWheelConstraint*> MyMWC;
+
 public:
 	//Sets a throttle between -1 and +1
 	UFUNCTION(BlueprintCallable)
 		void SetThrottle(float t);
 
-	void MoveTrack();
+	void MoveTrack(FVector force);
 	
 	UPROPERTY(EditDefaultsOnly)
 		float DrivingForce = 40000000;
 	
-	UFUNCTION()
-	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
 };

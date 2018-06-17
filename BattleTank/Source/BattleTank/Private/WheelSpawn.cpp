@@ -22,12 +22,12 @@ void UWheelSpawn::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
-
-	auto MWC = GetWorld()->SpawnActorDeferred<AMassWheelConstraint>(MassWheelConstraint,GetComponentTransform());
+	UE_LOG(LogTemp, Warning, TEXT("SpawnWheel start"));
+	MWC = GetWorld()->SpawnActorDeferred<AMassWheelConstraint>(MassWheelConstraint,GetComponentTransform());
 	if (!MWC) { return; }
 	MWC->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);
 	UGameplayStatics::FinishSpawningActor(MWC, GetComponentTransform());
-
+	UE_LOG(LogTemp, Warning, TEXT("SpawnWheel finish"));
 
 }
 
