@@ -18,6 +18,7 @@ class BATTLETANK_API UTankTrack : public UStaticMeshComponent
 	GENERATED_BODY()
 
 private:
+	UTankTrack();
 
 	virtual void BeginPlay()override;
 
@@ -27,7 +28,7 @@ private:
 
 	bool isMWCfound = false;
 
-	TArray<AMassWheelConstraint*> getMWC() const;
+	TArray<AMassWheelConstraint*> getMWC();
 	TArray<AMassWheelConstraint*> MyMWC;
 
 public:
@@ -39,5 +40,7 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly)
 		float DrivingForce = 40000000;
+
+	int32 SpawnWheelNum;
 	
 };

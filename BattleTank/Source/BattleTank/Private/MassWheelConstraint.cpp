@@ -16,12 +16,17 @@ AMassWheelConstraint::AMassWheelConstraint()
 
 	Axle = CreateDefaultSubobject<USphereComponent>(FName("Axle"));
 	Axle->SetupAttachment(RootComponent);
+	Axle->SetSimulatePhysics(true);
 
 	AxleConstraint = CreateDefaultSubobject<UPhysicsConstraintComponent>(FName("AxleConstraint"));
 	AxleConstraint->SetupAttachment(Axle);
 
 	Wheel = CreateDefaultSubobject<USphereComponent>(FName("Wheel"));
 	Wheel->SetupAttachment(Axle);
+	Wheel->SetSimulatePhysics(true);	
+	Wheel->SetNotifyRigidBodyCollision(true);
+
+	
 
 }
 
@@ -29,6 +34,8 @@ AMassWheelConstraint::AMassWheelConstraint()
 void AMassWheelConstraint::BeginPlay()
 {
 	Super::BeginPlay();
+
+	Wheel->OnComponentHit.AddDynamic(this, &AMassWheelConstraint::OnCompHit);
 
 	SetupConstraint();
 
@@ -39,7 +46,30 @@ void AMassWheelConstraint::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	isLanded = false;
+	//UE_LOG(LogTemp, Warning, TEXT("OutHit"));
 }
+
+void AMassWheelConstraint::OnCompHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+	isLanded = true;
+	//UE_LOG(LogTemp, Warning, TEXT("OnHit"));
+}
+
+
+void AMassWheelConstraint::AddAxleForce(FVector Force)
+{
+	if (isLanded)
+	{
+		Axle->AddForce(Force);
+		//UE_LOG(LogTemp, Warning, TEXT("isLanded"));
+	}
+	else
+	{
+		//UE_LOG(LogTemp, Warning, TEXT("NotLanded"));
+	}
+}
+
 
 void AMassWheelConstraint::SetupConstraint()
 {
@@ -50,9 +80,3 @@ void AMassWheelConstraint::SetupConstraint()
 
 	AxleConstraint->SetConstrainedComponents(Axle, NAME_None, Wheel, NAME_None);
 }
-
-void AMassWheelConstraint::AddAxleForce(FVector Force)
-{
-	Axle->AddForce(Force);
-}
-
